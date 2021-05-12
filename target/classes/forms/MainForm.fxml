@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainFormController">
+   <children>
+      <Label layoutX="201.0" layoutY="91.0" text="Ball!">
+         <font>
+            <Font name="Georgia" size="96.0" />
+         </font>
+      </Label>
+      <Button layoutX="243.0" layoutY="200.0" mnemonicParsing="false" text="Start">
+         <font>
+            <Font name="Georgia" size="32.0" />
+         </font>
+      </Button>
+      <Button layoutX="221.0" layoutY="277.0" mnemonicParsing="false" text="Settings">
+         <font>
+            <Font name="Georgia" size="32.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
