@@ -1,1 +1,7 @@
 Main.class
+objects\abstractions\XYObject.class
+objects\abstractions\Movable.class
+controllers\GameFormController.class
+objects\Floor.class
+objects\Cube.class
+objects\Circle.class

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("forms/MainForm.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("forms/GameForm.fxml"));
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
