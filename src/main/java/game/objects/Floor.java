@@ -1,10 +1,10 @@
-package objects;
+package game.objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import objects.abstractions.XYObject;
+import game.objects.abstractions.DrawableObject;
 
-public class Floor extends XYObject {
+public class Floor extends DrawableObject {
     private double a, b;
 
     public Floor(double x, double y, Color color, double a, double b) {
@@ -16,6 +16,6 @@ public class Floor extends XYObject {
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(this.color);
-        gc.fillRect(x, y, a, b);
+        gc.fillRect(getX(), getY(), a, b);
     }
 }
