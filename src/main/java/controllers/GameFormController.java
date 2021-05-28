@@ -1,27 +1,15 @@
 package controllers;
 
 import game.core.GameEngine;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import game.objects.Circle;
-import game.objects.Cube;
-import game.objects.Floor;
-import game.objects.abstractions.Movable;
-import game.objects.abstractions.DrawableObject;
-import game.objects.behavior.move.CubeMove;
-import game.objects.behavior.move.JumpMove;
 
 import java.net.URL;
 import java.util.*;
-
-import static java.lang.Math.random;
 
 public class GameFormController implements Initializable {
     @FXML
@@ -81,8 +69,9 @@ public class GameFormController implements Initializable {
         }
     };*/
 
-    public void onMouseClicked(KeyEvent keyEvent) {
-        engine.stop();
+    public void onMouseClicked() {
+        System.out.println("clicked");
+        engine.start();
     }
 
 
@@ -90,7 +79,6 @@ public class GameFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engine = new GameEngine(canvas);
         engine.setScoreLabel(scoreLabel);
-        engine.start();
 /*        initObjects();
         engine.schedule(drawEngine, 0, 16);
         engine.schedule(moveEngine, 0, 16);

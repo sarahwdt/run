@@ -1,12 +1,18 @@
 package game.objects;
 
-import game.objects.abstractions.Reusable;
+import game.objects.abstractions.*;
+import game.objects.behavior.move.Move;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import game.objects.abstractions.Movable;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
-public class Cube extends Movable implements Reusable {
+import java.util.LinkedList;
+import java.util.List;
+
+public class Cube extends SimpleFigureObject implements Reusable, Movable, Drawable, Collided {
     protected double a;
+    protected List<Move> moves = new LinkedList<>();
 
     public Cube(double x, double y, Color color, double a) {
         super(x, y, color);
@@ -26,5 +32,26 @@ public class Cube extends Movable implements Reusable {
 
     public double getA() {
         return a;
+    }
+
+    @Override
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    @Override
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
+
+    @Override
+    public Shape getShape() {
+        return new Rectangle(getX(), getY(), a, a);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        moves = new LinkedList<>();
     }
 }

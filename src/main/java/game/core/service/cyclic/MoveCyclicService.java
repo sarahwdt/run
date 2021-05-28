@@ -9,10 +9,10 @@ public class MoveCyclicService extends BasicCyclicService {
     }
 
     @Override
-    public void run() {
+    public void execute() {
         engine.getObjectHub().getObjects().stream()
                 .filter(object -> object instanceof Movable)
-                .forEach(object -> ((Movable) object).getMoveBehavior()
+                .forEach(object -> ((Movable) object).getMoves()
                         .forEach(move -> move.move(object)));
     }
 }

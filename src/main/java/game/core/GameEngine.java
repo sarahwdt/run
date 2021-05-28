@@ -28,23 +28,28 @@ public class GameEngine {
     private GraphicsContext graphicsContext;
     private Canvas canvas;
     private Label scoreLabel;
+    private boolean active = true;
     private final List<BasicCyclicService> services = new LinkedList<>();
     private final Timer cyclicServiceScheduler = new Timer("Cyclic-services-scheduler", true);
 
     private final Consumer<Movable> jumpAction = new Consumer<Movable>() {
         @Override
         public void accept(Movable movable) {
-            movable.getMoveBehavior().stream()
-                    .filter(move -> move instanceof JumpMove && !((JumpMove) move).isActive())
-                    .findFirst().ifPresent(move -> ((JumpMove) move).activate());
+            movable.getMoves().stream()
+                    .filter(move -> move instanceof JumpMove)
+                    .map(move -> (JumpMove)move)
+                    .forEach(jumpMove -> {
+                        if(!jumpMove.isActive()) jumpMove.jumpOnFloor(6);
+                        else jumpMove.jumpOnAir(5);
+                    });
         }
     };
 
     public GameEngine(Canvas canvas) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
-        initServices();
         initObjects();
+        initServices();
     }
 
     //region init
@@ -52,35 +57,43 @@ public class GameEngine {
         objectHub.getObjects().add(new Floor(0, canvas.getHeight() - canvas.getHeight() * 0.1,
                 Color.TEAL, canvas.getWidth(), canvas.getHeight() * 0.1));
         Circle actor = new Circle(getXMin() + 60, canvas.getHeight() - canvas.getHeight() * 0.1, Color.GREEN, 50);
-        actor.getMoveBehavior().add(new JumpMove(5));
-        actor.getMoveBehavior().add(new JumpMove(6));
+        actor.getMoves().add(new JumpMove(5, getYMax()));
         objectHub.getObjects().add(actor);
 
         List<Cube> enemies = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Cube enemy = new Cube(getYMax() + 300 * i, canvas.getHeight() - canvas.getHeight() * 0.1 - 50,
                     Color.RED, 50);
-            enemy.getMoveBehavior().add(new CubeMove());
+            enemy.getMoves().add(new CubeMove());
             enemies.add(enemy);
         }
         objectHub.getObjects().addAll(enemies);
     }
 
     private void initServices() {
-        services.add(new ScoreCyclicService(this));
+        services.add(new ScoreCyclicService(this, 16));
         services.add(new MoveCyclicService(this));
         services.add(new DrawCyclicService(this));
         services.add(new RespawnCyclicService(this, 200));
+        services.add(new CollisionCyclicService(this));
+        for (BasicCyclicService service : services) cyclicServiceScheduler.schedule(service, 0, 16);
     }
     //endregion
 
     //region control
-    public void start() {
-        for (BasicCyclicService service : services) cyclicServiceScheduler.schedule(service, 0, 16);
-    }
 
     public void stop() {
-        for (BasicCyclicService service : services) service.cancel();
+        active = false;
+        for (BasicCyclicService service : services) service.stop();
+    }
+
+    public void start() {
+        active = true;
+        for (BasicCyclicService service : services) service.start();
+    }
+
+    public void restart(){
+        stop();
     }
 
     public void scale(double ratio) {
@@ -111,12 +124,12 @@ public class GameEngine {
 
     public void setScore(int score) {
         this.score = score;
-/*        Platform.runLater(new Runnable() {
+        Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 scoreLabel.setText(String.valueOf(score));
             }
-        });*/
+        });
     }
 
     public ObjectHub getObjectHub() {
@@ -157,6 +170,14 @@ public class GameEngine {
 
     public void setScoreLabel(Label scoreLabel) {
         this.scoreLabel = scoreLabel;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     //endregion
 }

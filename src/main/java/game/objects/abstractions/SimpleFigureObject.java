@@ -3,15 +3,15 @@ package game.objects.abstractions;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public abstract class DrawableObject extends BasicObject implements Drawable{
+public abstract class SimpleFigureObject extends BasicObject implements Drawable{
     protected Color color;
 
-    public DrawableObject(double x, double y, Color color) {
+    public SimpleFigureObject(double x, double y, Color color) {
         super(x, y);
         this.color = color;
     }
 
-    public DrawableObject(DrawableObject object){
+    public SimpleFigureObject(SimpleFigureObject object){
         super(object);
         color = new Color(object.color.getRed(),
                 object.color.getGreen(),
@@ -28,4 +28,11 @@ public abstract class DrawableObject extends BasicObject implements Drawable{
     }
 
     public abstract void draw(GraphicsContext gc);
+
+    @Override
+    public void scale(double ration) {
+
+    }
+
+
 }

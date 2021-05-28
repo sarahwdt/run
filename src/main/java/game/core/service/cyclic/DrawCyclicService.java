@@ -9,7 +9,7 @@ public class DrawCyclicService extends BasicCyclicService {
     }
 
     @Override
-    public void run() {
+    public synchronized void execute() {
         if (engine.getGraphicsContext() == null) return;
         engine.getGraphicsContext().clearRect(engine.getXMin(), engine.getYMin(),
                 engine.getXMax(), engine.getYMax());

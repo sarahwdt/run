@@ -8,22 +8,22 @@ import static java.lang.Math.random;
 
 public class RespawnCyclicService extends BasicCyclicService {
     private double range;
+
     public RespawnCyclicService(GameEngine engine, double range) {
         super(engine);
         this.range = range;
     }
 
     @Override
-    public void run() {
+    public synchronized void execute() {
         engine.getObjectHub().getObjects().stream()
                 .filter(object -> object instanceof Reusable)
-                .filter(object -> object.getX() < engine.getXMin())
+                .filter(object -> object.getX() < engine.getXMin() - 100)
                 .forEach(this::respawn);
     }
 
-    private void respawn(BasicObject object){
-        object.setX(engine.getXMax() + (range*random()));
-        System.out.println("respawn");
+    private void respawn(BasicObject object) {
+        object.setX(engine.getXMax() + (range * random()));
     }
 
     public double getRange() {

@@ -2,9 +2,9 @@ package game.objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import game.objects.abstractions.DrawableObject;
+import game.objects.abstractions.SimpleFigureObject;
 
-public class Floor extends DrawableObject {
+public class Floor extends SimpleFigureObject{
     private double a, b;
 
     public Floor(double x, double y, Color color, double a, double b) {

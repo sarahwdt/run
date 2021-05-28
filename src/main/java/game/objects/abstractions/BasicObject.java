@@ -1,6 +1,6 @@
 package game.objects.abstractions;
 
-public class BasicObject {
+public abstract class BasicObject {
     private double x,y;
     private final double defaultX;
     private final double defaultY;
@@ -43,7 +43,10 @@ public class BasicObject {
         return defaultY;
     }
 
-    public void scale(double ration){
-
+    public void reset(){
+        x = defaultX;
+        y = defaultY;
     }
+
+    public abstract void scale(double ration);
 }
