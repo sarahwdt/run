@@ -1,5 +1,6 @@
 package game.core.service.cyclic;
 
+import game.config.GameConfig;
 import game.core.GameEngine;
 
 public class ScoreCyclicService extends BasicCyclicService {
@@ -13,10 +14,16 @@ public class ScoreCyclicService extends BasicCyclicService {
 
     @Override
     public void execute() {
-        store += 1000.0/period;
+        store += period;
         if(store >= 1000) {
             engine.setScore(engine.getScore() + 1);
             store = 0;
         }
+    }
+
+    @Override
+    public void reset(GameConfig gameConfig) {
+        store = 0;
+        engine.setScore(0);
     }
 }

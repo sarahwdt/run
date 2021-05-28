@@ -1,9 +1,9 @@
 package game.core.service.cyclic;
 
+import game.config.GameConfig;
 import game.core.GameEngine;
-import game.objects.abstractions.Collided;
-import game.objects.abstractions.Controlable;
-import javafx.scene.shape.Shape;
+import game.core.objects.abstractions.Collided;
+import game.core.objects.abstractions.PlayerControlled;
 
 public class CollisionCyclicService extends BasicCyclicService {
     public CollisionCyclicService(GameEngine engine) {
@@ -13,7 +13,7 @@ public class CollisionCyclicService extends BasicCyclicService {
     @Override
     protected synchronized void execute() {
         engine.getObjectHub().getObjects().stream()
-                .filter(object -> object instanceof Controlable && object instanceof Collided)
+                .filter(object -> object instanceof PlayerControlled && object instanceof Collided)
                 .map(object -> (Collided) object)
                 .forEach(actor -> engine.getObjectHub().getObjects().stream()
                         .filter(object -> object instanceof Collided && object != actor)
@@ -24,5 +24,10 @@ public class CollisionCyclicService extends BasicCyclicService {
                                 engine.stop();
                             }
                         }));
+    }
+
+    @Override
+    public void reset(GameConfig gameConfig) {
+
     }
 }

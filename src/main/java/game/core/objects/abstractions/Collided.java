@@ -1,4 +1,4 @@
-package game.objects.abstractions;
+package game.core.objects.abstractions;
 
 import javafx.scene.shape.Shape;
 

@@ -1,8 +1,8 @@
-package game.objects;
+package game.core.objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import game.objects.abstractions.SimpleFigureObject;
+import game.core.objects.abstractions.SimpleFigureObject;
 
 public class Floor extends SimpleFigureObject{
     private double a, b;

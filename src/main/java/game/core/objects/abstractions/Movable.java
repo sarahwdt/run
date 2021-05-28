@@ -1,6 +1,6 @@
-package game.objects.abstractions;
+package game.core.objects.abstractions;
 
-import game.objects.behavior.move.Move;
+import game.core.behavior.move.Move;
 
 import java.util.List;
 

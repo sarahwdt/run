@@ -1,7 +1,7 @@
-package game.objects;
+package game.core.objects;
 
-import game.objects.abstractions.*;
-import game.objects.behavior.move.Move;
+import game.core.objects.abstractions.*;
+import game.core.behavior.move.Move;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -10,7 +10,7 @@ import javafx.scene.shape.Shape;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Circle extends SimpleFigureObject implements Controlable, Movable, Drawable, Collided {
+public class Circle extends SimpleFigureObject implements Movable, Drawable, Collided {
     protected double r;
     protected List<Move> moves = new LinkedList<>();
 
@@ -43,6 +43,6 @@ public class Circle extends SimpleFigureObject implements Controlable, Movable, 
     @Override
     public void reset() {
         super.reset();
-        moves = new LinkedList<>();
+        moves.forEach(Move::reset);
     }
 }

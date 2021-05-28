@@ -1,18 +1,16 @@
-package game.objects.behavior.move;
+package game.core.behavior.move;
 
-import game.objects.abstractions.BasicObject;
+import game.core.objects.abstractions.BasicObject;
 
 public class JumpMove implements Move {
     private double velocity;
     private double g = 0.1;
     private int maxJumps = 3;
-    private double maxY;
     private int jumpsCount = 0;
     private boolean active = false;
 
-    public JumpMove(int maxJumps, double maxY) {
+    public JumpMove(int maxJumps) {
         this.maxJumps = maxJumps;
-        this.maxY = maxY;
     }
 
     @Override
@@ -63,6 +61,12 @@ public class JumpMove implements Move {
 
     public void deactivate() {
         active = false;
+    }
+
+    @Override
+    public void reset() {
+        jumpsCount = 0;
+        velocity = 0;
     }
 
     public int getMaxJumps() {

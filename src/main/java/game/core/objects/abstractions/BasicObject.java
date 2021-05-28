@@ -1,4 +1,4 @@
-package game.objects.abstractions;
+package game.core.objects.abstractions;
 
 public abstract class BasicObject {
     private double x,y;

@@ -1,7 +1,7 @@
-package game.objects;
+package game.core.objects;
 
-import game.objects.abstractions.*;
-import game.objects.behavior.move.Move;
+import game.core.objects.abstractions.*;
+import game.core.behavior.move.Move;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -10,7 +10,7 @@ import javafx.scene.shape.Shape;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Cube extends SimpleFigureObject implements Reusable, Movable, Drawable, Collided {
+public class Cube extends SimpleFigureObject implements Respawned, Movable, Drawable, Collided {
     protected double a;
     protected List<Move> moves = new LinkedList<>();
 
@@ -52,6 +52,6 @@ public class Cube extends SimpleFigureObject implements Reusable, Movable, Drawa
     @Override
     public void reset() {
         super.reset();
-        moves = new LinkedList<>();
+        moves.forEach(Move::reset);
     }
 }

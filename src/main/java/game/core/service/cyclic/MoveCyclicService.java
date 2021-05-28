@@ -1,7 +1,8 @@
 package game.core.service.cyclic;
 
+import game.config.GameConfig;
 import game.core.GameEngine;
-import game.objects.abstractions.Movable;
+import game.core.objects.abstractions.Movable;
 
 public class MoveCyclicService extends BasicCyclicService {
     public MoveCyclicService(GameEngine engine) {
@@ -14,5 +15,10 @@ public class MoveCyclicService extends BasicCyclicService {
                 .filter(object -> object instanceof Movable)
                 .forEach(object -> ((Movable) object).getMoves()
                         .forEach(move -> move.move(object)));
+    }
+
+    @Override
+    public void reset(GameConfig gameConfig) {
+
     }
 }

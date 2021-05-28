@@ -1,10 +1,11 @@
-package game.objects.behavior.move;
+package game.core.behavior.move;
 
-import game.objects.abstractions.BasicObject;
+import game.core.objects.abstractions.BasicObject;
 
 public interface Move {
     void move(BasicObject target);
     boolean isActive();
     void activate();
     void deactivate();
+    void reset();
 }

@@ -1,14 +1,15 @@
 package game.core;
 
+import game.config.GameConfig;
 import game.core.service.ObjectHub;
 import game.core.service.cyclic.*;
-import game.objects.Circle;
-import game.objects.Cube;
-import game.objects.Floor;
-import game.objects.abstractions.Controlable;
-import game.objects.abstractions.Movable;
-import game.objects.behavior.move.CubeMove;
-import game.objects.behavior.move.JumpMove;
+import game.core.objects.Circle;
+import game.core.objects.Cube;
+import game.core.objects.Floor;
+import game.core.objects.abstractions.PlayerControlled;
+import game.core.objects.abstractions.Movable;
+import game.core.behavior.move.RunImitationMove;
+import game.core.behavior.move.JumpMove;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,12 +24,15 @@ import java.util.Timer;
 import java.util.function.Consumer;
 
 public class GameEngine {
-    private int score = 0;
-    private final ObjectHub objectHub = new ObjectHub();
+    private boolean active = true;
+
     private GraphicsContext graphicsContext;
     private Canvas canvas;
+    private int score = 0;
     private Label scoreLabel;
-    private boolean active = true;
+
+    private GameConfig gameConfig;
+    private final ObjectHub objectHub = new ObjectHub();
     private final List<BasicCyclicService> services = new LinkedList<>();
     private final Timer cyclicServiceScheduler = new Timer("Cyclic-services-scheduler", true);
 
@@ -45,36 +49,24 @@ public class GameEngine {
         }
     };
 
-    public GameEngine(Canvas canvas) {
-        this.canvas = canvas;
-        this.graphicsContext = canvas.getGraphicsContext2D();
+    public GameEngine(GameConfig gameConfig) {
+        this.gameConfig = gameConfig;
+        this.canvas = gameConfig.getCanvas();
+        this.graphicsContext = gameConfig.getCanvas().getGraphicsContext2D();
         initObjects();
         initServices();
     }
 
     //region init
     private void initObjects() {
-        objectHub.getObjects().add(new Floor(0, canvas.getHeight() - canvas.getHeight() * 0.1,
-                Color.TEAL, canvas.getWidth(), canvas.getHeight() * 0.1));
-        Circle actor = new Circle(getXMin() + 60, canvas.getHeight() - canvas.getHeight() * 0.1, Color.GREEN, 50);
-        actor.getMoves().add(new JumpMove(5, getYMax()));
-        objectHub.getObjects().add(actor);
-
-        List<Cube> enemies = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Cube enemy = new Cube(getYMax() + 300 * i, canvas.getHeight() - canvas.getHeight() * 0.1 - 50,
-                    Color.RED, 50);
-            enemy.getMoves().add(new CubeMove());
-            enemies.add(enemy);
-        }
-        objectHub.getObjects().addAll(enemies);
+        objectHub.reset(gameConfig);
     }
 
     private void initServices() {
         services.add(new ScoreCyclicService(this, 16));
         services.add(new MoveCyclicService(this));
         services.add(new DrawCyclicService(this));
-        services.add(new RespawnCyclicService(this, 200));
+        services.add(new RespawnCyclicService(this, gameConfig.getSpawnRange(), gameConfig.getBarrierCount()));
         services.add(new CollisionCyclicService(this));
         for (BasicCyclicService service : services) cyclicServiceScheduler.schedule(service, 0, 16);
     }
@@ -94,6 +86,9 @@ public class GameEngine {
 
     public void restart(){
         stop();
+        objectHub.reset(gameConfig);
+        services.forEach(basicCyclicService -> basicCyclicService.reset(gameConfig));
+        start();
     }
 
     public void scale(double ratio) {
@@ -104,7 +99,7 @@ public class GameEngine {
         switch (keyEvent.getCode()) {
             case CONTROL:
                 objectHub.getObjects().stream()
-                        .filter(object -> object instanceof Controlable && object instanceof Movable)
+                        .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
                         .map(object -> (Movable) object)
                         .forEach(jumpAction);
                 break;
@@ -148,10 +143,6 @@ public class GameEngine {
         return canvas;
     }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
     public double getXMax() {
         return canvas.getWidth();
     }
@@ -178,6 +169,14 @@ public class GameEngine {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public GameConfig getGameConfig() {
+        return gameConfig;
+    }
+
+    public void setGameConfig(GameConfig gameConfig) {
+        this.gameConfig = gameConfig;
     }
     //endregion
 }
