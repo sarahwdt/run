@@ -39,8 +39,8 @@ public class GameEngine {
                     .filter(move -> move instanceof JumpMove)
                     .map(move -> (JumpMove) move)
                     .forEach(jumpMove -> {
-                        if (!jumpMove.isActive()) jumpMove.jumpOnFloor(6);
-                        else jumpMove.jumpOnAir(5);
+                        if (!jumpMove.isActive()) jumpMove.jumpOnFloor(12);
+                        else jumpMove.jumpOnAir(8);
                     });
         }
     };

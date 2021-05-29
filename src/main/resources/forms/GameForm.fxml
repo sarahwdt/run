@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
@@ -8,15 +9,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameFormController">
-   <children>
-      <Canvas fx:id="canvas" height="400.0" layoutX="-1.0" width="600.0" />
-      <Button fx:id="menuButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#menu" text="Menu" />
-      <Label fx:id="scoreLabel" layoutX="284.0" layoutY="14.0" text="0" textAlignment="CENTER">
-         <font>
-            <Font size="57.0" />
-         </font>
-      </Label>
-      <Button layoutX="67.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#restart" text="Restart" />
-   </children>
+<AnchorPane fx:id="pane" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.GameFormController">
+   <Canvas  onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" fx:id="canvas" height="400.0" layoutX="-1.0" width="600.0"/>
+   <Label  onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" fx:id="scoreLabel" layoutX="284.0" layoutY="14.0" text="0" textAlignment="CENTER">
+      <font>
+         <Font size="57.0"/>
+      </font>
+   </Label>
+   <ImageView  onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" fitHeight="36.0" fitWidth="37.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#menu" pickOnBounds="true"
+              preserveRatio="true">
+      <Image  url="@../images/menu.png"/>
+   </ImageView>
+   <ImageView  onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyPressed" fitHeight="36.0" fitWidth="37.0" layoutX="14.0" layoutY="56.0" onMouseClicked="#restart"
+              pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/play.png"/>
+   </ImageView>
 </AnchorPane>

@@ -4,7 +4,7 @@ import game.core.objects.abstractions.BasicObject;
 
 public class JumpMove implements Move {
     private double velocity;
-    private double g = 0.1;
+    private double g = 0.5;
     private int maxJumps = 3;
     private int jumpsCount = 0;
     private boolean active = false;

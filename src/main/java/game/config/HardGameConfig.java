@@ -11,19 +11,23 @@ import java.util.List;
 
 public class HardGameConfig implements GameConfig {
     private final double SPAWN_RANGE = 1000;
-    private final int BARRIERS_COUNT = 5;
+    private final int BARRIERS_COUNT = 10;
     private final Canvas canvas;
     private final Actor actor;
     private final List<BasicObject> barriers = new LinkedList<>();
     private final List<BasicObject> locationObjects = new LinkedList<>();
 
+    /**
+     * fjfjjf
+     * @param canvas
+     */
     public HardGameConfig(Canvas canvas) {
         this.canvas = canvas;
         double floorY = canvas.getHeight() - canvas.getHeight()*0.1;
         actor = new Actor(70, floorY, Color.GREEN, 50);
-        actor.getMoves().add(new JumpMove(5));
+        actor.getMoves().add(new JumpMove(0));
         actor.getMoves().add(new LeftMove(50));
-        actor.getMoves().add(new RightMove(canvas.getWidth()/2));
+        actor.getMoves().add(new RightMove(canvas.getWidth()));
 
         Floor floor = new Floor(0, floorY, Color.TEAL, canvas.getWidth() + 1, canvas.getHeight() * 0.1);
 

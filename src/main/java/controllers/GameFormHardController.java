@@ -24,6 +24,8 @@ public class GameFormHardController extends BasicController implements Initializ
 
     public void restart() {
         engine.restart();
+        scenes.get("hard").setOnKeyPressed(this::onKeyPressed);
+        scenes.get("hard").setOnKeyReleased(this::onKeyPressed);
     }
 
     public void menu() {
