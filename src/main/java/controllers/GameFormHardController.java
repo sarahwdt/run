@@ -1,6 +1,7 @@
 package controllers;
 
 import game.config.EasyGameConfig;
+import game.config.HardGameConfig;
 import game.core.GameEngine;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,9 +12,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
-public class GameFormController extends BasicController implements Initializable {
+public class GameFormHardController extends BasicController implements Initializable {
     @FXML
     private Canvas canvas;
     @FXML
@@ -30,20 +31,15 @@ public class GameFormController extends BasicController implements Initializable
         stage.setScene(scenes.get("main"));
         stage.show();
     }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        engine = new GameEngine(new EasyGameConfig(canvas));
+        engine = new GameEngine(new HardGameConfig(canvas));
         engine.setScoreLabel(scoreLabel);
         engine.stop();
     }
 
-    public void onKeyPressed(javafx.scene.input.KeyEvent keyEvent) {
+    public void onKeyPressed(KeyEvent keyEvent) {
         engine.input(keyEvent);
     }
 
-    public void setStage(Stage stage){
-        this.stage = stage;
-    }
 }

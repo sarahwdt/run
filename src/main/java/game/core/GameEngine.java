@@ -1,23 +1,19 @@
 package game.core;
 
 import game.config.GameConfig;
+import game.core.behavior.move.JumpMove;
+import game.core.behavior.move.LeftMove;
+import game.core.behavior.move.RightMove;
+import game.core.objects.abstractions.Movable;
+import game.core.objects.abstractions.PlayerControlled;
 import game.core.service.ObjectHub;
 import game.core.service.cyclic.*;
-import game.core.objects.Circle;
-import game.core.objects.Cube;
-import game.core.objects.Floor;
-import game.core.objects.abstractions.PlayerControlled;
-import game.core.objects.abstractions.Movable;
-import game.core.behavior.move.RunImitationMove;
-import game.core.behavior.move.JumpMove;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -27,7 +23,7 @@ public class GameEngine {
     private boolean active = true;
 
     private GraphicsContext graphicsContext;
-    private Canvas canvas;
+    private final Canvas canvas;
     private int score = 0;
     private Label scoreLabel;
 
@@ -41,13 +37,54 @@ public class GameEngine {
         public void accept(Movable movable) {
             movable.getMoves().stream()
                     .filter(move -> move instanceof JumpMove)
-                    .map(move -> (JumpMove)move)
+                    .map(move -> (JumpMove) move)
                     .forEach(jumpMove -> {
-                        if(!jumpMove.isActive()) jumpMove.jumpOnFloor(6);
+                        if (!jumpMove.isActive()) jumpMove.jumpOnFloor(6);
                         else jumpMove.jumpOnAir(5);
                     });
         }
     };
+
+    private final Consumer<Movable> rightBegin = new Consumer<Movable>() {
+        @Override
+        public void accept(Movable movable) {
+            movable.getMoves().stream()
+                    .filter(move -> move instanceof RightMove)
+                    .map(move -> (RightMove) move)
+                    .forEach(rightMove -> rightMove.begin(2));
+        }
+    };
+
+    private final Consumer<Movable> leftBegin = new Consumer<Movable>() {
+        @Override
+        public void accept(Movable movable) {
+            movable.getMoves().stream()
+                    .filter(move -> move instanceof LeftMove)
+                    .map(move -> (LeftMove) move)
+                    .forEach(leftMove -> leftMove.begin(2));
+        }
+    };
+
+    private final Consumer<Movable> leftStop = new Consumer<Movable>() {
+        @Override
+        public void accept(Movable movable) {
+            movable.getMoves().stream()
+                    .filter(move -> move instanceof LeftMove)
+                    .map(move -> (LeftMove) move)
+                    .forEach(LeftMove::stop);
+        }
+    };
+
+    private final Consumer<Movable> rightStop = new Consumer<Movable>() {
+        @Override
+        public void accept(Movable movable) {
+            movable.getMoves().stream()
+                    .filter(move -> move instanceof RightMove)
+                    .map(move -> (RightMove) move)
+                    .forEach(RightMove::stop);
+        }
+    };
+
 
     public GameEngine(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
@@ -66,7 +103,7 @@ public class GameEngine {
         services.add(new ScoreCyclicService(this, 16));
         services.add(new MoveCyclicService(this));
         services.add(new DrawCyclicService(this));
-        services.add(new RespawnCyclicService(this, gameConfig.getSpawnRange(), gameConfig.getBarrierCount()));
+        services.add(new RespawnCyclicService(this, gameConfig.getSpawnRange()));
         services.add(new CollisionCyclicService(this));
         for (BasicCyclicService service : services) cyclicServiceScheduler.schedule(service, 0, 16);
     }
@@ -84,7 +121,7 @@ public class GameEngine {
         for (BasicCyclicService service : services) service.start();
     }
 
-    public void restart(){
+    public void restart() {
         stop();
         objectHub.reset(gameConfig);
         services.forEach(basicCyclicService -> basicCyclicService.reset(gameConfig));
@@ -96,8 +133,16 @@ public class GameEngine {
     }
 
     public void input(KeyEvent keyEvent) {
+        Consumer<Movable> action = new Consumer<Movable>() {
+            @Override
+            public void accept(Movable movable) {
+
+            }
+        };
         switch (keyEvent.getCode()) {
-            case CONTROL:
+            case W:
+            case UP:
+                if(KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()))
                 objectHub.getObjects().stream()
                         .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
                         .map(object -> (Movable) object)
@@ -105,8 +150,26 @@ public class GameEngine {
                 break;
             case A:
             case LEFT:
+                if (KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()))
+                    action = leftBegin;
+                else
+                    action = leftStop;
+                objectHub.getObjects().stream()
+                        .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
+                        .map(object -> (Movable) object)
+                        .forEach(action);
+                break;
             case D:
             case RIGHT:
+                if (KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()))
+                    action = rightBegin;
+                else
+                    action = rightStop;
+                objectHub.getObjects().stream()
+                        .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
+                        .map(object -> (Movable) object)
+                        .forEach(action);
+                break;
             default:
         }
     }

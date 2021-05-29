@@ -19,6 +19,12 @@ public class Circle extends SimpleFigureObject implements Movable, Drawable, Col
         this.r = r;
     }
 
+    public Circle(Circle circle) {
+        super(circle);
+        this.r = circle.r;
+        this.moves = circle.moves;
+    }
+
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(this.color);
@@ -37,7 +43,7 @@ public class Circle extends SimpleFigureObject implements Movable, Drawable, Col
 
     @Override
     public Shape getShape() {
-        return new Ellipse(getX() - r / 2, getY() - r / 2, r / 2 - 10, r / 2 - 10);
+        return new Ellipse(getX() - r / 2, getY() - r / 2, r / 2 - 5, r / 2 - 5);
     }
 
     @Override

@@ -14,16 +14,17 @@ public class Rectangle extends Cube {
     public Rectangle(Rectangle rectangle) {
         super(rectangle);
         this.b = rectangle.b;
+        moves = rectangle.moves;
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(this.color);
-        gc.fillRect(getX(), getY(), a, b);
+        gc.fillRect(getX(), getY() - b, a, b);
     }
 
     @Override
     public Shape getShape() {
-        return new javafx.scene.shape.Rectangle(getX(), getY(), a, b);
+        return new javafx.scene.shape.Rectangle(getX(), getY()- b, a, b);
     }
 }

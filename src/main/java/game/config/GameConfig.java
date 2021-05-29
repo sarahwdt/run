@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 public interface GameConfig {
-    Set<BasicObject> getAvailableBarriers();
+    List<BasicObject> getAvailableBarriers();
     List<BasicObject> getLocationObjects();
     Actor getActor();
-    int getBarrierCount();
     double getSpawnRange();
     Canvas getCanvas();
+    int getBarriersCount();
 }

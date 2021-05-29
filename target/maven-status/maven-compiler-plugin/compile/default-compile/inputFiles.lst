@@ -1,6 +1,8 @@
 C:\Projects\run\src\main\java\controllers\GameFormController.java
+C:\Projects\run\src\main\java\game\core\behavior\move\RightMove.java
 C:\Projects\run\src\main\java\game\core\objects\Actor.java
 C:\Projects\run\src\main\java\game\config\GameConfig.java
+C:\Projects\run\src\main\java\game\config\HardGameConfig.java
 C:\Projects\run\src\main\java\game\core\behavior\move\JumpMove.java
 C:\Projects\run\src\main\java\game\core\objects\abstractions\Movable.java
 C:\Projects\run\src\main\java\game\core\behavior\move\RunImitationMove.java
@@ -12,9 +14,11 @@ C:\Projects\run\src\main\java\game\core\objects\Floor.java
 C:\Projects\run\src\main\java\game\core\objects\abstractions\Collided.java
 C:\Projects\run\src\main\java\game\core\objects\abstractions\SimpleFigureObject.java
 C:\Projects\run\src\main\java\game\core\service\cyclic\BasicCyclicService.java
+C:\Projects\run\src\main\java\game\core\behavior\move\LeftMove.java
 C:\Projects\run\src\main\java\game\core\objects\Rectangle.java
 C:\Projects\run\src\main\java\game\config\EasyGameConfig.java
 C:\Projects\run\src\main\java\game\core\objects\abstractions\Respawned.java
+C:\Projects\run\src\main\java\controllers\GameFormHardController.java
 C:\Projects\run\src\main\java\controllers\MainFormController.java
 C:\Projects\run\src\main\java\game\core\service\cyclic\CollisionCyclicService.java
 C:\Projects\run\src\main\java\game\core\behavior\move\Move.java
@@ -26,4 +30,6 @@ C:\Projects\run\src\main\java\game\core\service\cyclic\DrawCyclicService.java
 C:\Projects\run\src\main\java\Main.java
 C:\Projects\run\src\main\java\game\core\service\cyclic\MoveCyclicService.java
 C:\Projects\run\src\main\java\game\core\service\cyclic\ScoreCyclicService.java
+C:\Projects\run\src\main\java\controllers\BasicController.java
+C:\Projects\run\src\main\java\game\core\objects\EnemyCircle.java
 C:\Projects\run\src\main\java\game\core\objects\abstractions\BasicObject.java

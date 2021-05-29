@@ -19,10 +19,8 @@ public class JumpMove implements Move {
 
 
         double y = target.getY() - velocity;
-        System.out.println(y);
-        System.out.println(target.getDefaultY());
         if (y < 50) {
-            velocity = 0;
+            velocity = -1;
             jumpsCount = maxJumps;
         } else if (y < target.getDefaultY()) {
             target.setY(y);

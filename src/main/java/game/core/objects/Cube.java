@@ -22,12 +22,13 @@ public class Cube extends SimpleFigureObject implements Respawned, Movable, Draw
     public Cube(Cube cube) {
         super(cube);
         this.a = cube.a;
+        moves = cube.moves;
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         gc.setFill(this.color);
-        gc.fillRect(getX(), getY(), a, a);
+        gc.fillRect(getX(), getY() - a, a, a);
     }
 
     public double getA() {
@@ -46,7 +47,7 @@ public class Cube extends SimpleFigureObject implements Respawned, Movable, Draw
 
     @Override
     public Shape getShape() {
-        return new Rectangle(getX(), getY(), a, a);
+        return new Rectangle(getX(), getY() - a, a, a);
     }
 
     @Override

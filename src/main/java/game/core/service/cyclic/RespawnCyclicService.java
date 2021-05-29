@@ -5,46 +5,51 @@ import game.core.GameEngine;
 import game.core.objects.abstractions.BasicObject;
 import game.core.objects.abstractions.Movable;
 import game.core.objects.abstractions.Respawned;
-import game.core.service.ObjectHub;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.lang.Math.random;
 
 public class RespawnCyclicService extends BasicCyclicService {
     private double range;
-    private int barricadesCount;
 
-    public RespawnCyclicService(GameEngine engine, double range, int barricadesCount) {
+    public RespawnCyclicService(GameEngine engine, double range) {
         super(engine);
         this.range = range;
-        this.barricadesCount = barricadesCount;
     }
 
     @Override
-    public synchronized void execute() {
+    public void execute() {
         List<BasicObject> objects = engine.getObjectHub().getObjects();
-        objects.stream()
-                .filter(object -> object instanceof Respawned)
-                .filter(object -> object.getX() < engine.getXMin() - 200)
-                .forEach(objects::remove);
-        long barricadesNow = objects.stream().filter(basicObject ->
-                basicObject instanceof Respawned && basicObject instanceof Movable).count();
-        for(long i = barricadesNow; barricadesNow<=barricadesCount;i++){
-            BasicObject object = engine.getObjectHub().getAvailableBarriers().stream().findAny().get();
-            respawn(object);
-            objects.add(object);
+        synchronized (engine.getObjectHub().getObjects()){
+            objects.stream()
+                    .filter(object -> object instanceof Respawned)
+                    .filter(object -> object.getX() < engine.getXMin() - 200)
+                    .forEach(this::respawn);
         }
     }
 
     @Override
     public void reset(GameConfig gameConfig) {
         range = gameConfig.getSpawnRange();
-        barricadesCount = gameConfig.getBarrierCount();
     }
 
     private void respawn(BasicObject object) {
-        object.setX(engine.getXMax() + (range * random()));
+        synchronized (engine.getObjectHub().getObjects()){
+            engine.getObjectHub().getObjects().replaceAll(basicObject -> {
+                if (basicObject == object) {
+                    BasicObject newObject;
+                    do {
+                        int random = (int) (100 * random()) % engine.getObjectHub().getAvailableBarriers().size();
+                        newObject = engine.getObjectHub().getAvailableBarriers()
+                                .get(random);
+                    } while (engine.getObjectHub().getObjects().contains(newObject));
+                    newObject.setX(engine.getXMax() + (range * random()));
+                    return newObject;
+                } else return basicObject;
+            });
+        }
     }
-
 }

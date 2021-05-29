@@ -6,12 +6,12 @@ import static java.lang.Math.random;
 
 public class RandomJumpMovie extends JumpMove {
     public RandomJumpMovie() {
-        super(1);
+        super(3);
     }
 
     @Override
     public void move(BasicObject target) {
-        if (100 * random() < 3) jumpOnFloor(2);
+        if (100 * random() < 1) jumpOnFloor(6);
         super.move(target);
     }
 }
