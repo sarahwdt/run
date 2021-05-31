@@ -12,6 +12,9 @@ import java.util.List;
 
 import static java.lang.Math.random;
 
+/**
+ * Сервис респавна объектов
+ */
 public class RespawnCyclicService extends BasicCyclicService {
     private double range;
 

@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.function.Consumer;
 
+/**
+ * Игровой движок
+ */
 public class GameEngine {
     private boolean active = true;
 
@@ -32,6 +35,9 @@ public class GameEngine {
     private final List<BasicCyclicService> services = new LinkedList<>();
     private final Timer cyclicServiceScheduler = new Timer("Cyclic-services-scheduler", true);
 
+    /**
+     * Обработчик события кнопки прыжка
+     */
     private final Consumer<Movable> jumpAction = new Consumer<Movable>() {
         @Override
         public void accept(Movable movable) {
@@ -45,7 +51,10 @@ public class GameEngine {
         }
     };
 
-    private final Consumer<Movable> rightBegin = new Consumer<Movable>() {
+    /**
+     * Обработчик события кнопки движения вправо
+     */
+    private final Consumer<Movable> rightBegin = new Consumer<>() {
         @Override
         public void accept(Movable movable) {
             movable.getMoves().stream()
@@ -55,6 +64,9 @@ public class GameEngine {
         }
     };
 
+    /**
+     * Обработчик события кнопки движения влево
+     */
     private final Consumer<Movable> leftBegin = new Consumer<Movable>() {
         @Override
         public void accept(Movable movable) {
@@ -65,6 +77,9 @@ public class GameEngine {
         }
     };
 
+    /**
+     * Обработчик события кнопки движения влево
+     */
     private final Consumer<Movable> leftStop = new Consumer<Movable>() {
         @Override
         public void accept(Movable movable) {
@@ -75,6 +90,9 @@ public class GameEngine {
         }
     };
 
+    /**
+     * Обработчик события кнопки движения вправо
+     */
     private final Consumer<Movable> rightStop = new Consumer<Movable>() {
         @Override
         public void accept(Movable movable) {
@@ -85,7 +103,11 @@ public class GameEngine {
         }
     };
 
-
+    /**
+     * Инициализация движка
+     *
+     * @param gameConfig конфигурация
+     */
     public GameEngine(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
         this.canvas = gameConfig.getCanvas();
@@ -95,10 +117,17 @@ public class GameEngine {
     }
 
     //region init
+
+    /**
+     * Инициализация объектов
+     */
     private void initObjects() {
         objectHub.reset(gameConfig);
     }
 
+    /**
+     * Инициализация сервисов
+     */
     private void initServices() {
         services.add(new ScoreCyclicService(this, 16));
         services.add(new MoveCyclicService(this));
@@ -111,16 +140,25 @@ public class GameEngine {
 
     //region control
 
+    /**
+     * Остановка движка
+     */
     public void stop() {
         active = false;
         for (BasicCyclicService service : services) service.stop();
     }
 
+    /**
+     * Запуск движка
+     */
     public void start() {
         active = true;
         for (BasicCyclicService service : services) service.start();
     }
 
+    /**
+     * Перезапуск движка
+     */
     public void restart() {
         stop();
         objectHub.reset(gameConfig);
@@ -128,10 +166,20 @@ public class GameEngine {
         start();
     }
 
+    /**
+     * Изменение масштаба
+     *
+     * @param ratio множитель
+     */
     public void scale(double ratio) {
         objectHub.getObjects().forEach(object -> object.scale(ratio));
     }
 
+    /**
+     * Обработчик пользовательского ввода
+     *
+     * @param keyEvent событие
+     */
     public void input(KeyEvent keyEvent) {
         Consumer<Movable> action = new Consumer<Movable>() {
             @Override
@@ -142,11 +190,11 @@ public class GameEngine {
         switch (keyEvent.getCode()) {
             case W:
             case UP:
-                if(KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()))
-                objectHub.getObjects().stream()
-                        .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
-                        .map(object -> (Movable) object)
-                        .forEach(jumpAction);
+                if (KeyEvent.KEY_PRESSED.equals(keyEvent.getEventType()))
+                    objectHub.getObjects().stream()
+                            .filter(object -> object instanceof PlayerControlled && object instanceof Movable)
+                            .map(object -> (Movable) object)
+                            .forEach(jumpAction);
                 break;
             case A:
             case LEFT:
@@ -176,10 +224,19 @@ public class GameEngine {
     //endregion
 
     //region getters'n'setters
+
+    /**
+     * @return текущий счет
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Установка счета в строку счета
+     *
+     * @param score значение счета
+     */
     public void setScore(int score) {
         this.score = score;
         Platform.runLater(new Runnable() {
@@ -190,54 +247,76 @@ public class GameEngine {
         });
     }
 
+    /**
+     * @return менеджер объектов
+     */
     public ObjectHub getObjectHub() {
         return objectHub;
     }
 
+    /**
+     * @return графический контекст
+     */
     public GraphicsContext getGraphicsContext() {
         return graphicsContext;
     }
 
-    public void setGraphicsContext(GraphicsContext graphicsContext) {
-        this.graphicsContext = graphicsContext;
-    }
-
+    /**
+     * @return холст
+     */
     public Canvas getCanvas() {
         return canvas;
     }
 
+    /**
+     * @return правая граница поля
+     */
     public double getXMax() {
         return canvas.getWidth();
     }
 
+    /**
+     * @return нижняя граница поля
+     */
     public double getYMax() {
         return canvas.getHeight();
     }
 
+    /**
+     * @return левая граница поля
+     */
     public double getXMin() {
         return 0;
     }
 
+    /**
+     * @return верхняя граница поля
+     */
     public double getYMin() {
         return 0;
     }
 
+    /**
+     * Установка строки для отрисовки счета
+     *
+     * @param scoreLabel объект строки
+     */
     public void setScoreLabel(Label scoreLabel) {
         this.scoreLabel = scoreLabel;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
+    /**
+     * @return текущая конфигурация
+     */
     public GameConfig getGameConfig() {
         return gameConfig;
     }
 
+    /**
+     * Установка игровой конфигурации
+     *
+     * @param gameConfig конфигурация
+     */
     public void setGameConfig(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
     }

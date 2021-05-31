@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"controllers"},{"l":"game.config"},{"l":"game.core"},{"l":"game.core.behavior.move"},{"l":"game.core.objects"},{"l":"game.core.objects.abstractions"},{"l":"game.core.service"},{"l":"game.core.service.cyclic"}]

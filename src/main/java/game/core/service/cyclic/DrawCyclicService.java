@@ -4,6 +4,9 @@ import game.config.GameConfig;
 import game.core.GameEngine;
 import game.core.objects.abstractions.Drawable;
 
+/**
+ * Сервис отрисовки
+ */
 public class DrawCyclicService extends BasicCyclicService {
     public DrawCyclicService(GameEngine engine) {
         super(engine);

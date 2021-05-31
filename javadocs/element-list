@@ -1,0 +1,9 @@
+unnamed package
+controllers
+game.config
+game.core
+game.core.behavior.move
+game.core.objects
+game.core.objects.abstractions
+game.core.service
+game.core.service.cyclic

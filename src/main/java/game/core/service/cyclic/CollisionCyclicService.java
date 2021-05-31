@@ -5,6 +5,9 @@ import game.core.GameEngine;
 import game.core.objects.abstractions.Collided;
 import game.core.objects.abstractions.PlayerControlled;
 
+/**
+ * Сервис регистрации столкновений
+ */
 public class CollisionCyclicService extends BasicCyclicService {
     public CollisionCyclicService(GameEngine engine) {
         super(engine);

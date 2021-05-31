@@ -3,6 +3,9 @@ package game.core.service.cyclic;
 import game.config.GameConfig;
 import game.core.GameEngine;
 
+/**
+ * Сервис ведения счета
+ */
 public class ScoreCyclicService extends BasicCyclicService {
     private long period;
     private double store = 0;

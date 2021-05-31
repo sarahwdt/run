@@ -4,6 +4,9 @@ import game.config.GameConfig;
 import game.core.GameEngine;
 import game.core.objects.abstractions.Movable;
 
+/**
+ * Сервис обработки движения
+ */
 public class MoveCyclicService extends BasicCyclicService {
     public MoveCyclicService(GameEngine engine) {
         super(engine);
